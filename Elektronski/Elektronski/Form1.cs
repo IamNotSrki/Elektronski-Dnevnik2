@@ -20,34 +20,58 @@ namespace Elektronski
         private void osobaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Form2 osoba = new Form2();
-            osoba.Show();
+            osoba.ShowDialog();
         }
 
         private void pregledToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form3 odeljenja = new Form3();
-            odeljenja.Show();
+        //    Form3 odeljenja = new Form3();
+       //     odeljenja.Show();
+            
         }
 
         private void skolskaGodinaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Form4 skolske_godine = new Form4("Skolska_godina");
             skolske_godine.Text = "Skolske godine";
-            skolske_godine.Show();
+            skolske_godine.ShowDialog();
         }
 
         private void predmetToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form4 predmeti = new Form4("Predmet");
-            predmeti.Text = "Predmeti";
-            predmeti.Show();
+            FormPredmet predmeti = new FormPredmet();
+            predmeti.ShowDialog();
         }
 
         private void smerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Form4 smerovi = new Form4("Smer");
             smerovi.Text = "Smerovi";
-            smerovi.Show();
+            smerovi.ShowDialog();
+        }
+
+        private void buttonOdeljenja_Click(object sender, EventArgs e)
+        {
+            Form3 odeljenja = new Form3();
+            odeljenja.ShowDialog(); 
+        }
+
+        private void buttonOcene_Click(object sender, EventArgs e)
+        {
+            Form5 ocene = new Form5();
+            ocene.ShowDialog();
+        }
+
+        private void buttonUpisnice_Click(object sender, EventArgs e)
+        {
+            Form7 upisnice = new Form7();
+            upisnice.ShowDialog();
+        }
+
+        private void buttonRaspodele_Click(object sender, EventArgs e)
+        {
+            Form8 raspodele = new Form8();
+            raspodele.ShowDialog();
         }
     }
 }

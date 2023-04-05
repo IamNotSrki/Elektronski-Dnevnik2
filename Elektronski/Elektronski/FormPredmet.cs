@@ -12,7 +12,7 @@ using System.Configuration;
 
 namespace Elektronski
 {
-    public partial class Form4 : Form
+    public partial class FormPredmet : Form
     {
         DataTable podaci, dtTabela, dtTabelaJoin;
         SqlDataAdapter adapter;
@@ -20,17 +20,16 @@ namespace Elektronski
         int broj;
         SqlConnection veza;
 
-        public Form4(string putanja)
+        public FormPredmet()
         {
-            imeTabele = putanja;
             InitializeComponent();
         }
 
-        private void Form4_Load(object sender, EventArgs e)
+        private void FormPredmet_Load(object sender, EventArgs e)
         {
             string CS = ConfigurationManager.ConnectionStrings["home"].ConnectionString;
             veza = new SqlConnection(CS);
-            adapter = new SqlDataAdapter("SELECT * FROM " + imeTabele, Konekcija.Connect());
+            adapter = new SqlDataAdapter("SELECT * FROM Predmet", Konekcija.Connect());
             podaci = new DataTable();
             adapter.Fill(podaci);
             gridPopulate();
@@ -38,12 +37,49 @@ namespace Elektronski
             dataGridView1.Columns["id"].ReadOnly = true;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void gridPopulate()
+        {
+            string n = "SELECT * FROM Predmet ORDER BY id";
+            SqlDataAdapter adapter = new SqlDataAdapter(n, veza);
+            dtTabela = new DataTable();
+            adapter.Fill(dtTabela);
+
+            string tmp = "SELECT * FROM Predmet ORDER BY id";
+            adapter = new SqlDataAdapter(tmp, veza);
+            dtTabelaJoin = new DataTable();
+            adapter.Fill(dtTabelaJoin);
+
+            dataGridView1.DataSource = dtTabelaJoin;
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.ReadOnly = true;
+            dataGridView1.Columns["id"].Visible = false;
+        }
+
+        private void btBrisi_Click(object sender, EventArgs e)
         {
             try
             {
-                string naredba = "UPDATE " + imeTabele + " SET naziv='" + tbNaziv.Text;
-                naredba = naredba + "' WHERE id='";
+                string naredba = "DELETE FROM Predmet WHERE id = " + dtTabela.Rows[broj]["id"].ToString();
+                SqlCommand komanda = new SqlCommand(naredba, veza);
+                veza.Open();
+                komanda.ExecuteNonQuery();
+                veza.Close();
+                gridPopulate();
+            }
+
+            catch (Exception Greska)
+            {
+                veza.Close();
+                MessageBox.Show(Greska.Message);
+            }
+        }
+
+        private void btIzmeni_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string naredba = "UPDATE Predmet SET naziv='" + tbNaziv.Text;
+                naredba = naredba + "', razred='" +  tbRazred.Text + "' WHERE id='";
                 naredba = naredba + dtTabela.Rows[broj]["id"].ToString() + "'";
                 SqlCommand komanda = new SqlCommand(naredba, veza);
                 veza.Open();
@@ -59,9 +95,26 @@ namespace Elektronski
             }
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void btDodaj_Click(object sender, EventArgs e)
         {
+            try
+            {
+                string naredba = "INSERT INTO Predmet (naziv, razred) VALUES ('";
+                naredba = naredba + tbNaziv.Text + "','";
+                naredba = naredba + tbRazred.Text + "')";
 
+                SqlCommand komanda = new SqlCommand(naredba, veza);
+                veza.Open();
+                komanda.ExecuteNonQuery();
+                veza.Close();
+                gridPopulate();
+            }
+
+            catch (Exception Greska)
+            {
+                veza.Close();
+                MessageBox.Show(Greska.Message);
+            }
         }
 
         private void dataGridView1_CurrentCellChanged(object sender, EventArgs e)
@@ -70,64 +123,7 @@ namespace Elektronski
             {
                 broj = dataGridView1.CurrentRow.Index;
                 tbNaziv.Text = dtTabela.Rows[broj]["naziv"].ToString();
-            }
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                string naredba = "DELETE FROM " + imeTabele + " WHERE id = " + dtTabela.Rows[broj]["id"].ToString();
-                SqlCommand komanda = new SqlCommand(naredba, veza);
-                veza.Open();
-                komanda.ExecuteNonQuery();
-                veza.Close();
-                gridPopulate();
-            }
-
-            catch (Exception Greska)
-            {
-                veza.Close();
-                MessageBox.Show(Greska.Message);
-            }
-        }
-
-        private void gridPopulate()
-        {
-            string n = "SELECT * FROM " + imeTabele + " ORDER BY id";
-            SqlDataAdapter adapter = new SqlDataAdapter(n, veza);
-            dtTabela = new DataTable();
-            adapter.Fill(dtTabela);
-
-            string tmp = "SELECT * FROM " + imeTabele + " ORDER BY id";
-            adapter = new SqlDataAdapter(tmp, veza);
-            dtTabelaJoin = new DataTable();
-            adapter.Fill(dtTabelaJoin);
-
-            dataGridView1.DataSource = dtTabelaJoin;
-            dataGridView1.AllowUserToAddRows = false;
-            dataGridView1.ReadOnly = true;
-            dataGridView1.Columns["id"].Visible = false;
-        }
-
-        private void btDodaj_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                string naredba = "INSERT INTO " + imeTabele + " (naziv) VALUES ('";
-                naredba = naredba + tbNaziv.Text + "')";
-
-                SqlCommand komanda = new SqlCommand(naredba, veza);
-                veza.Open();
-                komanda.ExecuteNonQuery();
-                veza.Close();
-                gridPopulate();
-            }
-
-            catch (Exception Greska)
-            {
-                veza.Close();
-                MessageBox.Show(Greska.Message);
+                tbRazred.Text = dtTabela.Rows[broj]["razred"].ToString();
             }
         }
     }

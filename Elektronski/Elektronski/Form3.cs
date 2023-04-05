@@ -14,292 +14,179 @@ namespace Elektronski
 {
     public partial class Form3 : Form
     {
-        static string CS = ConfigurationManager.ConnectionStrings["home"].ConnectionString;
-        static int mesto;
-        SqlConnection conn = null;
-        SqlCommand komanda = new SqlCommand();
-        DataTable odeljenja = new DataTable();
-        SqlDataReader citac;
-        SqlCommand komandaCount = new SqlCommand();
-
-        DataTable smerovi = new DataTable();
-        DataTable nastavnici1 = new DataTable();
-        DataTable godine = new DataTable();
-        SqlCommand a = new SqlCommand();
-        SqlDataReader citac1;
+        int broj;
+        SqlConnection veza;
+        DataTable dtOdeljenja, dtOdeljenjaJoin;
 
         public Form3()
         {
-            InitializeComponent();           
+            InitializeComponent();
         }
 
-        private DataTable popuniSmerove()
+        private void nastavnikPopulate()
         {
-        //    conn = new SqlConnection(CS);
-            conn.Open();        
-            a.CommandText = "Select * from smer";
-            a.Connection = conn;
-            citac1 = a.ExecuteReader();
-            smerovi.Load(citac1);
-            conn.Close();
-            return smerovi;
-        }
-        private DataTable popuniStaresine()
-        {
-         //   conn = new SqlConnection(CS);
-            conn.Open();
-            a.CommandText = "Select * from osoba where uloga = 2";
-            a.Connection = conn;
-            citac1 = a.ExecuteReader();
-            nastavnici1.Load(citac1);
-            conn.Close();
-            return nastavnici1;
-        }
-        private DataTable popuniGodine()
-        {
-       //     conn = new SqlConnection(CS);
-            conn.Open();
-            a.CommandText = "Select * from skolska_godina";
-            a.Connection = conn;
-            citac1 = a.ExecuteReader();
-            godine.Load(citac1);
-            conn.Close();
-            return godine;
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT id, ime+' '+prezime AS naziv FROM osoba WHERE uloga = 2", veza);
+            DataTable dtNastavnik = new DataTable();
+            adapter.Fill(dtNastavnik);
+            cbImePrezime.DataSource = dtNastavnik;
+            cbImePrezime.ValueMember = "id";
+            cbImePrezime.DisplayMember = "naziv";
         }
 
-        private DataTable poveziSe()
+        private void godinaPopulate()
         {
-            conn = new SqlConnection(CS);
-            StringBuilder spajanje = new StringBuilder("SELECT * FROM odeljenje ");
-            spajanje.Append("JOIN skolska_godina ON skolska_godina.id = odeljenje.godina_id ");
-            spajanje.Append("JOIN smer ON smer.id = odeljenje.smer_id ");
-            spajanje.Append("JOIN osoba ON osoba.id = odeljenje.razredni_id WHERE osoba.uloga = 2");
-            conn.Open();
-            komanda.CommandText = spajanje.ToString();
-            komanda.Connection = conn;
-            citac = komanda.ExecuteReader();
-            odeljenja.Load(citac);
-            conn.Close();
-            return odeljenja;
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM skolska_godina", veza);
+            DataTable dtGodina = new DataTable();
+            adapter.Fill(dtGodina);
+            cbSkolskaGodina.DataSource = dtGodina;
+            cbSkolskaGodina.ValueMember = "id";
+            cbSkolskaGodina.DisplayMember = "naziv";
         }
 
-        private int brojRedova()
+        private void smerPopulate()
         {
-            StringBuilder spajanje = new StringBuilder("SELECT COUNT(*) FROM odeljenje ");
-            spajanje.Append("JOIN skolska_godina ON skolska_godina.id = odeljenje.godina_id ");
-            spajanje.Append("JOIN smer ON smer.id = odeljenje.smer_id ");
-            spajanje.Append("JOIN osoba ON osoba.id = odeljenje.razredni_id WHERE osoba.uloga = 2");
-            conn.Open();
-            komandaCount.CommandText = spajanje.ToString();
-            komandaCount.Connection = conn;
-            int broj = (int)(komandaCount.ExecuteScalar());
-            conn.Close();
-            return broj;
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT id, naziv FROM smer", veza);
+            DataTable dtPredmet = new DataTable();
+            adapter.Fill(dtPredmet);
+            cbSmer.DataSource = dtPredmet;
+            cbSmer.ValueMember = "id";
+            cbSmer.DisplayMember = "naziv";
+        }
+
+        private void gridPopulate()
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM odeljenje ORDER BY id", veza);
+            dtOdeljenja = new DataTable();
+            adapter.Fill(dtOdeljenja);
+
+            string tmp1 = "SELECT odeljenje.id, odeljenje.razred, odeljenje.indeks, smer.naziv AS 'Naziv smera', osoba.ime + ' ' + osoba.prezime AS 'Razredni staresina', Skolska_godina.naziv AS 'Skolska godina' ";
+            string tmp2 = "FROM Odeljenje JOIN smer ON Odeljenje.smer_id = smer.id JOIN Osoba ON Odeljenje.razredni_id = osoba.id JOIN Skolska_godina ON Odeljenje.godina_id = Skolska_godina.id WHERE osoba.uloga = 2";
+            string tmp = tmp1 + tmp2;
+            adapter = new SqlDataAdapter(tmp, veza);
+            dtOdeljenjaJoin = new DataTable();
+            adapter.Fill(dtOdeljenjaJoin);
+
+            dataGridView1.DataSource = dtOdeljenjaJoin;
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.ReadOnly = true;
+            dataGridView1.Columns["id"].Visible = false;
+        }
+
+        private void dataGridView1_CurrentCellChanged(object sender, EventArgs e)
+        {
+            if (dataGridView1.CurrentRow != null)
+            {
+                broj = dataGridView1.CurrentRow.Index;
+                tbRazred.Text = dtOdeljenja.Rows[broj]["razred"].ToString();
+                tbIndeks.Text = dtOdeljenja.Rows[broj]["indeks"].ToString();
+                cbSmer.SelectedValue = dtOdeljenja.Rows[broj]["smer_id"].ToString();
+                cbImePrezime.SelectedValue = dtOdeljenja.Rows[broj]["razredni_id"].ToString();
+                cbSkolskaGodina.SelectedValue = dtOdeljenja.Rows[broj]["godina_id"].ToString();
+            }
+        }
+
+        private void btBrisi_Click(object sender, EventArgs e)
+        {
+
+            try
+            {
+                string naredba = "DELETE FROM odeljenje WHERE id = " + dtOdeljenja.Rows[broj]["id"].ToString();
+                SqlCommand komanda = new SqlCommand(naredba, veza);
+                veza.Open();
+                komanda.ExecuteNonQuery();
+                veza.Close();
+                gridPopulate();
+            }
+            catch (Exception Greska)
+            {
+                veza.Close();
+                MessageBox.Show(Greska.Message);
+
+            }
+        }
+
+        private void btDodaj_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (int.Parse(tbRazred.Text) < 1 || int.Parse(tbRazred.Text) > 4)
+                    throw new Exception("Razredi su 1, 2, 3 i 4.");
+                string naredba = "INSERT INTO odeljenje (razred, indeks, smer_id, razredni_id, godina_id) VALUES ('";
+                naredba = naredba + tbRazred.Text + "','";
+                naredba = naredba + tbIndeks.Text + "','";
+                naredba = naredba + cbSmer.SelectedValue.ToString() + "','";
+                naredba = naredba + cbImePrezime.SelectedValue.ToString() + "','";
+                naredba = naredba + cbSkolskaGodina.SelectedValue.ToString() + "')";
+
+                SqlCommand komanda = new SqlCommand(naredba, veza);
+                veza.Open();
+                komanda.ExecuteNonQuery();
+                veza.Close();
+                gridPopulate();
+            }
+            catch (Exception Greska)
+            {
+                veza.Close();
+                MessageBox.Show(Greska.Message);
+            }
+        }
+
+        private void btIzmeni_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (int.Parse(tbRazred.Text) < 1 || int.Parse(tbRazred.Text) > 4)
+                    throw new Exception("Razredi su 1, 2, 3 i 4.");
+                string naredba = "UPDATE odeljenje SET razred='" + tbRazred.Text;
+                naredba = naredba + "', indeks='" + tbIndeks.Text;
+                naredba = naredba + "', smer_id='" + cbSmer.SelectedValue.ToString();
+                naredba = naredba + "', razredni_id='" + cbImePrezime.SelectedValue.ToString();
+                naredba = naredba + "', godina_id='" + cbSkolskaGodina.SelectedValue.ToString() + "'WHERE id='";
+                naredba = naredba + dtOdeljenja.Rows[broj]["id"].ToString() + "'";
+                SqlCommand komanda = new SqlCommand(naredba, veza);
+                veza.Open();
+                komanda.ExecuteNonQuery();
+                veza.Close();
+                gridPopulate();
+            }
+            catch (Exception Greska)
+            {
+                veza.Close();
+                MessageBox.Show(Greska.Message);
+            }
         }
 
         private void Form3_Load(object sender, EventArgs e)
         {
-            odeljenja = poveziSe();
-            smerovi = popuniSmerove();
-            nastavnici1 = popuniStaresine();
-            godine = popuniGodine();
-            conn.Open();
-            a.CommandText = "Select COUNT(*) FROM smer";
-            a.Connection = conn;
-            
-            for (int i = 0; i < (int)(a.ExecuteScalar()); i++)
-                comboBox1.Items.Add(smerovi.Rows[i][1].ToString());
-            a.CommandText = "Select COUNT(*) FROM osoba where uloga = 2";
-            a.Connection = conn;
-            for (int i = 0; i < (int)(a.ExecuteScalar()); i++)
-                comboBox2.Items.Add(nastavnici1.Rows[i][1].ToString() + ' ' + nastavnici1.Rows[i][2].ToString());
-            a.CommandText = "Select COUNT(*) FROM skolska_godina";
-            a.Connection = conn;
-            for (int i = 0; i < (int)(a.ExecuteScalar()); i++)
-                comboBox3.Items.Add(godine.Rows[i][1].ToString());
-            conn.Close();
-            mesto = 0;
-            textBox1.Text = odeljenja.Rows[0][0].ToString();
-            textBox2.Text = odeljenja.Rows[0][1].ToString();
-            textBox3.Text = odeljenja.Rows[0][2].ToString();
-            comboBox1.Text = odeljenja.Rows[0][9].ToString();
-            comboBox2.Text = odeljenja.Rows[0][11].ToString() + ' ' + odeljenja.Rows[0][12].ToString();
-            comboBox3.Text = odeljenja.Rows[0][7].ToString();
-            buttonPrvi.Visible = false;
-            buttonPrethodni.Visible = false;
-            buttonSledeci.Visible = true;
-            buttonPoslednji.Visible = true;
+            string CS = ConfigurationManager.ConnectionStrings["home"].ConnectionString;
+            veza = new SqlConnection(CS);
+            nastavnikPopulate();
+            godinaPopulate();
+            smerPopulate();
+            gridPopulate();
         }
 
-        private void buttonPrvi_Click(object sender, EventArgs e)
+        private void cbSkolskaGodina_SelectedIndexChanged(object sender, EventArgs e)
         {
-            odeljenja = poveziSe();
-            conn.Open();
-            mesto = 0;
-            if (conn.State == ConnectionState.Open)
-            {
-                textBox1.Text = odeljenja.Rows[0][0].ToString();
-                textBox2.Text = odeljenja.Rows[0][1].ToString();
-                textBox3.Text = odeljenja.Rows[0][2].ToString();
-                comboBox1.Text = odeljenja.Rows[0][9].ToString();
-                comboBox2.Text = odeljenja.Rows[0][11].ToString() + ' ' + odeljenja.Rows[0][12].ToString();
-                comboBox3.Text = odeljenja.Rows[0][7].ToString();
-            }
-            buttonPrvi.Visible = false;
-            buttonPrethodni.Visible = false;
-            buttonSledeci.Visible = true;
-            buttonPoslednji.Visible = true;
-            conn.Close();
+
         }
 
-        private void buttonPrethodni_Click(object sender, EventArgs e)
+        private void cbSmer_SelectedIndexChanged(object sender, EventArgs e)
         {
-            odeljenja = poveziSe();
-            mesto = int.Parse(textBox1.Text) - 2;
-            conn.Open();
-            if (conn.State == ConnectionState.Open)
-            {
-                textBox1.Text = odeljenja.Rows[mesto][0].ToString();
-                textBox2.Text = odeljenja.Rows[mesto][1].ToString();
-                textBox3.Text = odeljenja.Rows[mesto][2].ToString();
-                comboBox1.Text = odeljenja.Rows[mesto][9].ToString();
-                comboBox2.Text = odeljenja.Rows[mesto][11].ToString() + ' ' + odeljenja.Rows[mesto][12].ToString();
-                comboBox3.Text = odeljenja.Rows[mesto][7].ToString();
-            }
-            if (mesto == 0)
-            {
-                buttonPrvi.Visible = false;
-                buttonPrethodni.Visible = false;
-            }
-            else
-            {
-                buttonPrvi.Visible = true;
-                buttonPrethodni.Visible = true;
-            }
-            buttonSledeci.Visible = true;
-            buttonPoslednji.Visible = true;
-            conn.Close();
+
         }
 
-        private void buttonSledeci_Click(object sender, EventArgs e)
+        private void tbRazred_TextChanged(object sender, EventArgs e)
         {
-            odeljenja = poveziSe();
-            mesto = int.Parse(textBox1.Text);
-            conn.Open();
-            if (conn.State == ConnectionState.Open)
-            {
-                textBox1.Text = odeljenja.Rows[mesto][0].ToString();
-                textBox2.Text = odeljenja.Rows[mesto][1].ToString();
-                textBox3.Text = odeljenja.Rows[mesto][2].ToString();
-                comboBox1.Text = odeljenja.Rows[mesto][9].ToString();
-                comboBox2.Text = odeljenja.Rows[mesto][11].ToString() + ' ' + odeljenja.Rows[mesto][12].ToString();
-                comboBox3.Text = odeljenja.Rows[mesto][7].ToString();
-            }
-            buttonPrvi.Visible = true;
-            buttonPrethodni.Visible = true;
-            conn.Close();
-            if (mesto == brojRedova() - 1)
-            {
-                buttonSledeci.Visible = false;
-                buttonPoslednji.Visible = false;
-            }
-            else
-            {
-                buttonSledeci.Visible = true;
-                buttonPoslednji.Visible = true;
-            }
+
         }
 
-        private void buttonPoslednji_Click(object sender, EventArgs e)
+        private void tbIndeks_TextChanged(object sender, EventArgs e)
         {
-            odeljenja = poveziSe();
-            mesto = brojRedova() - 1;
-            textBox1.Text = odeljenja.Rows[mesto][0].ToString();
-            textBox2.Text = odeljenja.Rows[mesto][1].ToString();
-            textBox3.Text = odeljenja.Rows[mesto][2].ToString();
-            comboBox1.Text = odeljenja.Rows[mesto][9].ToString();
-            comboBox2.Text = odeljenja.Rows[mesto][11].ToString() + ' ' + odeljenja.Rows[mesto][12].ToString();
-            comboBox3.Text = odeljenja.Rows[mesto][7].ToString();
-            buttonSledeci.Visible = false;
-            buttonPoslednji.Visible = false;
-            buttonPrvi.Visible = true;
-            buttonPrethodni.Visible = true;
+
         }
 
-        private void buttonDodaj_Click(object sender, EventArgs e)
-        {
-            int smerID, razredniID, godinaID;
-            conn.Open();
-            SqlCommand b = new SqlCommand();
-
-            StringBuilder tekstB = new StringBuilder("SELECT id FROM smer WHERE naziv = '" + comboBox1.SelectedItem.ToString() + "'");
-            b.CommandText = tekstB.ToString();
-            b.Connection = conn;
-            smerID = (int)(b.ExecuteScalar());
-            StringBuilder tekstC = new StringBuilder("SELECT id FROM osoba WHERE ime = LEFT('" + comboBox2.SelectedItem.ToString());
-            tekstC.Append("', CHARINDEX(' ', '" + comboBox2.SelectedItem.ToString() + "'))");
-            b.CommandText = tekstC.ToString();
-            b.Connection = conn;
-            razredniID = (int)(b.ExecuteScalar());
-            StringBuilder tekstD = new StringBuilder("SELECT id FROM skolska_godina WHERE naziv = '" + comboBox3.SelectedItem.ToString() + "'");
-            b.CommandText = tekstD.ToString();
-            b.Connection = conn;
-            godinaID = (int)(b.ExecuteScalar());
-
-            StringBuilder te = new StringBuilder("INSERT INTO odeljenje VALUES(");
-            te.Append(int.Parse(textBox1.Text) + ",");
-            te.Append(int.Parse(textBox2.Text) + ",");
-            te.Append("'" + textBox3.Text + "',");
-            te.Append(smerID + ",");
-            te.Append(razredniID + ",");
-            te.Append(godinaID + ")");
-            SqlCommand dodaj = new SqlCommand(te.ToString(), conn);
-            dodaj.ExecuteNonQuery();
-            conn.Close();
-        }
-
-        private void buttonIzmeni_Click(object sender, EventArgs e)
-        {
-            int smerID, razredniID, godinaID;
-            conn.Open();
-            SqlCommand b = new SqlCommand();
-
-            StringBuilder tekstB = new StringBuilder("SELECT id FROM smer WHERE naziv = '" + comboBox1.SelectedItem.ToString() + "'");
-            b.CommandText = tekstB.ToString();
-            b.Connection = conn;
-            smerID = (int)(b.ExecuteScalar());
-            StringBuilder tekstC = new StringBuilder("SELECT id FROM osoba WHERE ime = LEFT('" + comboBox2.SelectedItem.ToString());
-            tekstC.Append("', CHARINDEX(' ', '" + comboBox2.SelectedItem.ToString() + "'))");
-            b.CommandText = tekstC.ToString();
-            b.Connection = conn;
-            razredniID = (int)(b.ExecuteScalar());
-            StringBuilder tekstD = new StringBuilder("SELECT id FROM skolska_godina WHERE naziv = '" + comboBox3.SelectedItem.ToString() + "'");
-            b.CommandText = tekstD.ToString();
-            b.Connection = conn;
-            godinaID = (int)(b.ExecuteScalar());
-
-            StringBuilder te = new StringBuilder("UPDATE odeljenje ");
-            te.Append("SET razred = " + int.Parse(textBox2.Text));
-            te.Append(", indeks = '" + textBox3.Text + "'");
-            te.Append(", smer_id = " + smerID);
-            te.Append(", razredni_id = " + razredniID);
-            te.Append(", godina_id = " + godinaID);
-            te.Append(" WHERE id = " + int.Parse(textBox1.Text));
-            SqlCommand izmeni = new SqlCommand(te.ToString(), conn);
-            izmeni.ExecuteNonQuery();
-            conn.Close();
-        }
-
-        private void buttonBrisi_Click(object sender, EventArgs e)
-        {
-            StringBuilder te = new StringBuilder("DELETE FROM odeljenje WHERE id = " + int.Parse(textBox1.Text));
-            SqlCommand brisi = new SqlCommand(te.ToString(), conn);
-            conn.Open();
-            brisi.ExecuteNonQuery();
-            conn.Close();
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void cbImePrezime_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

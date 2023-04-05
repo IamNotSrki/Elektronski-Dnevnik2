@@ -28,236 +28,185 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tbRazred = new System.Windows.Forms.TextBox();
+            this.tbIndeks = new System.Windows.Forms.TextBox();
+            this.btDodaj = new System.Windows.Forms.Button();
+            this.btIzmeni = new System.Windows.Forms.Button();
+            this.btBrisi = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.cbImePrezime = new System.Windows.Forms.ComboBox();
+            this.cbSmer = new System.Windows.Forms.ComboBox();
+            this.cbSkolskaGodina = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.buttonPoslednji = new System.Windows.Forms.Button();
-            this.buttonSledeci = new System.Windows.Forms.Button();
-            this.buttonBrisi = new System.Windows.Forms.Button();
-            this.buttonIzmeni = new System.Windows.Forms.Button();
-            this.buttonDodaj = new System.Windows.Forms.Button();
-            this.buttonPrethodni = new System.Windows.Forms.Button();
-            this.buttonPrvi = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.label9 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(351, 95);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(117, 20);
-            this.textBox1.TabIndex = 10;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(280, 98);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(18, 13);
-            this.label1.TabIndex = 9;
-            this.label1.Text = "ID";
-            // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(351, 167);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(117, 20);
-            this.textBox3.TabIndex = 14;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(351, 132);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(117, 20);
-            this.textBox2.TabIndex = 13;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(280, 170);
+            this.label3.Location = new System.Drawing.Point(199, 52);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(39, 13);
-            this.label3.TabIndex = 12;
+            this.label3.TabIndex = 30;
             this.label3.Text = "Indeks";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(280, 135);
+            this.label2.Location = new System.Drawing.Point(133, 52);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(41, 13);
-            this.label2.TabIndex = 11;
+            this.label2.TabIndex = 29;
             this.label2.Text = "Razred";
             // 
-            // label6
+            // label1
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(280, 273);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(41, 13);
-            this.label6.TabIndex = 17;
-            this.label6.Text = "Godina";
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(405, 53);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(118, 13);
+            this.label1.TabIndex = 28;
+            this.label1.Text = "Ime i prezime razrednog";
             // 
-            // label5
+            // tbRazred
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(280, 239);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(49, 13);
-            this.label5.TabIndex = 16;
-            this.label5.Text = "Razredni";
+            this.tbRazred.Location = new System.Drawing.Point(136, 84);
+            this.tbRazred.Name = "tbRazred";
+            this.tbRazred.Size = new System.Drawing.Size(38, 20);
+            this.tbRazred.TabIndex = 27;
+            this.tbRazred.TextChanged += new System.EventHandler(this.tbRazred_TextChanged);
+            // 
+            // tbIndeks
+            // 
+            this.tbIndeks.Location = new System.Drawing.Point(202, 84);
+            this.tbIndeks.Name = "tbIndeks";
+            this.tbIndeks.Size = new System.Drawing.Size(36, 20);
+            this.tbIndeks.TabIndex = 26;
+            this.tbIndeks.TextChanged += new System.EventHandler(this.tbIndeks_TextChanged);
+            // 
+            // btDodaj
+            // 
+            this.btDodaj.Location = new System.Drawing.Point(576, 331);
+            this.btDodaj.Margin = new System.Windows.Forms.Padding(2);
+            this.btDodaj.Name = "btDodaj";
+            this.btDodaj.Size = new System.Drawing.Size(73, 22);
+            this.btDodaj.TabIndex = 25;
+            this.btDodaj.Text = "Dodaj";
+            this.btDodaj.UseVisualStyleBackColor = true;
+            this.btDodaj.Click += new System.EventHandler(this.btDodaj_Click);
+            // 
+            // btIzmeni
+            // 
+            this.btIzmeni.Location = new System.Drawing.Point(356, 330);
+            this.btIzmeni.Margin = new System.Windows.Forms.Padding(2);
+            this.btIzmeni.Name = "btIzmeni";
+            this.btIzmeni.Size = new System.Drawing.Size(73, 23);
+            this.btIzmeni.TabIndex = 24;
+            this.btIzmeni.Text = "Izmeni";
+            this.btIzmeni.UseVisualStyleBackColor = true;
+            this.btIzmeni.Click += new System.EventHandler(this.btIzmeni_Click);
+            // 
+            // btBrisi
+            // 
+            this.btBrisi.Location = new System.Drawing.Point(136, 330);
+            this.btBrisi.Margin = new System.Windows.Forms.Padding(2);
+            this.btBrisi.Name = "btBrisi";
+            this.btBrisi.Size = new System.Drawing.Size(73, 24);
+            this.btBrisi.TabIndex = 23;
+            this.btBrisi.Text = "Brisi";
+            this.btBrisi.UseVisualStyleBackColor = true;
+            this.btBrisi.Click += new System.EventHandler(this.btBrisi_Click);
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(136, 137);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersWidth = 51;
+            this.dataGridView1.RowTemplate.Height = 24;
+            this.dataGridView1.Size = new System.Drawing.Size(514, 166);
+            this.dataGridView1.TabIndex = 22;
+            this.dataGridView1.CurrentCellChanged += new System.EventHandler(this.dataGridView1_CurrentCellChanged);
+            // 
+            // cbImePrezime
+            // 
+            this.cbImePrezime.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbImePrezime.FormattingEnabled = true;
+            this.cbImePrezime.Location = new System.Drawing.Point(390, 84);
+            this.cbImePrezime.Margin = new System.Windows.Forms.Padding(2);
+            this.cbImePrezime.Name = "cbImePrezime";
+            this.cbImePrezime.Size = new System.Drawing.Size(149, 21);
+            this.cbImePrezime.TabIndex = 20;
+            this.cbImePrezime.SelectedIndexChanged += new System.EventHandler(this.cbImePrezime_SelectedIndexChanged);
+            // 
+            // cbSmer
+            // 
+            this.cbSmer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSmer.FormattingEnabled = true;
+            this.cbSmer.Location = new System.Drawing.Point(266, 84);
+            this.cbSmer.Margin = new System.Windows.Forms.Padding(2);
+            this.cbSmer.Name = "cbSmer";
+            this.cbSmer.Size = new System.Drawing.Size(96, 21);
+            this.cbSmer.TabIndex = 31;
+            this.cbSmer.SelectedIndexChanged += new System.EventHandler(this.cbSmer_SelectedIndexChanged);
+            // 
+            // cbSkolskaGodina
+            // 
+            this.cbSkolskaGodina.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSkolskaGodina.FormattingEnabled = true;
+            this.cbSkolskaGodina.Location = new System.Drawing.Point(573, 84);
+            this.cbSkolskaGodina.Margin = new System.Windows.Forms.Padding(2);
+            this.cbSkolskaGodina.Name = "cbSkolskaGodina";
+            this.cbSkolskaGodina.Size = new System.Drawing.Size(77, 21);
+            this.cbSkolskaGodina.TabIndex = 32;
+            this.cbSkolskaGodina.SelectedIndexChanged += new System.EventHandler(this.cbSkolskaGodina_SelectedIndexChanged);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(280, 206);
+            this.label4.Location = new System.Drawing.Point(573, 52);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(31, 13);
-            this.label4.TabIndex = 15;
-            this.label4.Text = "Smer";
+            this.label4.Size = new System.Drawing.Size(80, 13);
+            this.label4.TabIndex = 33;
+            this.label4.Text = "Skolska godina";
             // 
-            // buttonPoslednji
+            // label5
             // 
-            this.buttonPoslednji.Location = new System.Drawing.Point(674, 331);
-            this.buttonPoslednji.Name = "buttonPoslednji";
-            this.buttonPoslednji.Size = new System.Drawing.Size(75, 23);
-            this.buttonPoslednji.TabIndex = 29;
-            this.buttonPoslednji.Text = ">>";
-            this.buttonPoslednji.UseVisualStyleBackColor = true;
-            this.buttonPoslednji.Click += new System.EventHandler(this.buttonPoslednji_Click);
-            // 
-            // buttonSledeci
-            // 
-            this.buttonSledeci.Location = new System.Drawing.Point(566, 331);
-            this.buttonSledeci.Name = "buttonSledeci";
-            this.buttonSledeci.Size = new System.Drawing.Size(75, 23);
-            this.buttonSledeci.TabIndex = 28;
-            this.buttonSledeci.Text = ">";
-            this.buttonSledeci.UseVisualStyleBackColor = true;
-            this.buttonSledeci.Click += new System.EventHandler(this.buttonSledeci_Click);
-            // 
-            // buttonBrisi
-            // 
-            this.buttonBrisi.Location = new System.Drawing.Point(456, 331);
-            this.buttonBrisi.Name = "buttonBrisi";
-            this.buttonBrisi.Size = new System.Drawing.Size(75, 23);
-            this.buttonBrisi.TabIndex = 27;
-            this.buttonBrisi.Text = "Briši";
-            this.buttonBrisi.UseVisualStyleBackColor = true;
-            this.buttonBrisi.Click += new System.EventHandler(this.buttonBrisi_Click);
-            // 
-            // buttonIzmeni
-            // 
-            this.buttonIzmeni.Location = new System.Drawing.Point(351, 331);
-            this.buttonIzmeni.Name = "buttonIzmeni";
-            this.buttonIzmeni.Size = new System.Drawing.Size(75, 23);
-            this.buttonIzmeni.TabIndex = 26;
-            this.buttonIzmeni.Text = "Izmeni";
-            this.buttonIzmeni.UseVisualStyleBackColor = true;
-            this.buttonIzmeni.Click += new System.EventHandler(this.buttonIzmeni_Click);
-            // 
-            // buttonDodaj
-            // 
-            this.buttonDodaj.Location = new System.Drawing.Point(250, 331);
-            this.buttonDodaj.Name = "buttonDodaj";
-            this.buttonDodaj.Size = new System.Drawing.Size(75, 23);
-            this.buttonDodaj.TabIndex = 25;
-            this.buttonDodaj.Text = "Dodaj";
-            this.buttonDodaj.UseVisualStyleBackColor = true;
-            this.buttonDodaj.Click += new System.EventHandler(this.buttonDodaj_Click);
-            // 
-            // buttonPrethodni
-            // 
-            this.buttonPrethodni.Location = new System.Drawing.Point(143, 331);
-            this.buttonPrethodni.Name = "buttonPrethodni";
-            this.buttonPrethodni.Size = new System.Drawing.Size(75, 23);
-            this.buttonPrethodni.TabIndex = 24;
-            this.buttonPrethodni.Text = "<";
-            this.buttonPrethodni.UseVisualStyleBackColor = true;
-            this.buttonPrethodni.Click += new System.EventHandler(this.buttonPrethodni_Click);
-            // 
-            // buttonPrvi
-            // 
-            this.buttonPrvi.Location = new System.Drawing.Point(44, 331);
-            this.buttonPrvi.Name = "buttonPrvi";
-            this.buttonPrvi.Size = new System.Drawing.Size(75, 23);
-            this.buttonPrvi.TabIndex = 23;
-            this.buttonPrvi.Text = "<<";
-            this.buttonPrvi.UseVisualStyleBackColor = true;
-            this.buttonPrvi.Click += new System.EventHandler(this.buttonPrvi_Click);
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(350, 203);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 30;
-            // 
-            // comboBox2
-            // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(350, 236);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 21);
-            this.comboBox2.TabIndex = 31;
-            // 
-            // comboBox3
-            // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(351, 270);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(121, 21);
-            this.comboBox3.TabIndex = 32;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(81, 27);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(645, 24);
-            this.label9.TabIndex = 33;
-            this.label9.Text = "Nakon dodavanja, izmene ili brisanja, treba zatvoriti prozor pa ga opet otvoriti";
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(284, 52);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(65, 13);
+            this.label5.TabIndex = 34;
+            this.label5.Text = "Naziv smera";
             // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(822, 420);
-            this.Controls.Add(this.label9);
-            this.Controls.Add(this.comboBox3);
-            this.Controls.Add(this.comboBox2);
-            this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.buttonPoslednji);
-            this.Controls.Add(this.buttonSledeci);
-            this.Controls.Add(this.buttonBrisi);
-            this.Controls.Add(this.buttonIzmeni);
-            this.Controls.Add(this.buttonDodaj);
-            this.Controls.Add(this.buttonPrethodni);
-            this.Controls.Add(this.buttonPrvi);
-            this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.cbSkolskaGodina);
+            this.Controls.Add(this.cbSmer);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.tbRazred);
+            this.Controls.Add(this.tbIndeks);
+            this.Controls.Add(this.btDodaj);
+            this.Controls.Add(this.btIzmeni);
+            this.Controls.Add(this.btBrisi);
+            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.cbImePrezime);
             this.Name = "Form3";
-            this.Text = "Odeljenje";
+            this.Text = "Odeljenja";
             this.Load += new System.EventHandler(this.Form3_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -265,25 +214,20 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox tbRazred;
+        private System.Windows.Forms.TextBox tbIndeks;
+        private System.Windows.Forms.Button btDodaj;
+        private System.Windows.Forms.Button btIzmeni;
+        private System.Windows.Forms.Button btBrisi;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.ComboBox cbImePrezime;
+        private System.Windows.Forms.ComboBox cbSmer;
+        private System.Windows.Forms.ComboBox cbSkolskaGodina;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button buttonPoslednji;
-        private System.Windows.Forms.Button buttonSledeci;
-        private System.Windows.Forms.Button buttonBrisi;
-        private System.Windows.Forms.Button buttonIzmeni;
-        private System.Windows.Forms.Button buttonDodaj;
-        private System.Windows.Forms.Button buttonPrethodni;
-        private System.Windows.Forms.Button buttonPrvi;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label5;
+
     }
 }
